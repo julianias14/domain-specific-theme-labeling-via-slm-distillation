@@ -1,20 +1,20 @@
-# AI Studio Challenge Project Title
+# Efficient Customer Support AI: Distilling LLMs into Small Language Models
 
-> 💡 **Note for the team:** This is just a template. Update the above title with your AI Studio Challenge Project name. Remove all guidance notes and example text in this template and populate this README with your own content. You can work on this README throughout AI Studio, and get feedback from your AI Studio Coach and Challenge Advisor before finalizing it.  
+> Break Through Tech AI Studio | Industry Partner: Automation Anywhere
 
 ---
 
 ### 👥 **Team Members**
 
-**Example:**
-
-| Name             | GitHub Handle | Contribution                                                             |
-|------------------|---------------|--------------------------------------------------------------------------|
-| Taylor Nguyen    | @taylornguyen | Data exploration, visualization, overall project coordination            |
-| Jordan Ramirez   | @jramirez     | Data collection, exploratory data analysis (EDA), dataset documentation  |
-| Amina Hassan     | @aminahassan  | Data preprocessing, feature engineering, data validation                 |
-| Priya Mehta      | @pmehta       | Model selection, hyperparameter tuning, model training and optimization  |
-| Chris Park       | @chrispark    | Model evaluation, performance analysis, results interpretation           |
+| Name             | GitHub Handle |
+|------------------|---------------|
+| Juliania Shyprykevych    | @julianias14 |
+| Van Do   | @vantastics     |
+| Ancheng Li     | @Ancheng-git  |
+| Naavya Jain      | @naavyaj-29       |
+| Kelly Huang       | @kelly-huang06    |
+| Aashish Khosla       | @AashishKhosla    |
+| Wiesmes Antwi       | @wiesmes    |
 
 ---
 
@@ -22,100 +22,79 @@
 
 **Example:**
 
-- Developed a machine learning model using `[model type/technique]` to address `[challenge project task]`.
-- Achieved `[key metric or result]`, demonstrating `[value or impact]` for `[host company]`.
-- Generated actionable insights to inform business decisions at `[host company or stakeholders]`.
-- Implemented `[specific methodology]` to address industry constraints or expectations.
+- Fine-tuned Phi-3.5-mini (3.8B parameters) using 4-bit QLoRA on a Google Colab T4 GPU.
+- Tested SmolLM2 360M and 1.7B models across four hyperparameter experiments.
+- Improved Phi-3.5-mini's reported held-out LLM-judge composite score from 3.81 to 3.96 in a later, 1,000-example configuration; other reported response-quality metrics improved as well.
+- Consolidated 2,200 evaluation records across SmolLM2 and Phi-3.5-mini baseline and fine-tuned outputs into a common reporting workflow.
+- Identified a key trade-off: increases in semantic similarity do not always translate into better LLM-judge scores.
+These findings are preliminary and are not evidence yet that an SLM matches a frontier LLM in quality, cost, or latency.
 
 ---
 
 ## 👩🏽‍💻 **Setup and Installation**
 
-**Provide step-by-step instructions so someone else can run your code and reproduce your results. Depending on your setup, include:**
-
-* How to clone the repository
-* How to install dependencies
-* How to set up the environment
-* How to access the dataset(s)
+The project uses Python, Hugging Face tooling, and Google Colab for GPU-based experiments. The following steps provide a dataset-access smoke test, not a guaranteed reproduction of the model-training experiments.
+1. Clone this repository using its GitHub Code menu, then open the cloned directory.* How to install dependencies
+2. Create and activate a Python virtual environment (macOS/Linux):
+```
+python3 -m venv .venv
+source .venv/bin/activate
+```
+3. Install the packages needed for the dataset smoke test:
+```
+python -m pip install --upgrade pip
+python -m pip install datasets pandas
+```
 * How to run the notebook or scripts
 
 ---
 
 ## 🏗️ **Project Overview**
 
-**Describe:**
+Large language models (LLMs) can help enterprises understand customer-support requests and generate relevant responses, but deploying a frontier model for every request may introduce substantial inference costs and latency. This project investigates whether smaller language models (SLMs) can learn from LLM-generated examples and deliver useful customer-support outputs with a more efficient deployment footprint.
 
-- How this project is connected to the Break Through Tech AI Program
-- Your AI Studio host company and the project objective and scope
-- The real-world significance of the problem and the potential impact of your work
+In collaboration with Automation Anywhere, the team is exploring knowledge distillation and parameter-efficient fine-tuning (PEFT), including LoRA and QLoRA. The experimental work covers customer-support request understanding and response generation, using semantic similarity, automated response-quality judgments, and text-overlap measures to evaluate model behavior. The broader challenge also calls for intent/theme-labeling accuracy, inference latency, and cost-per-inference comparisons with a frontier LLM.
 
----
-
-## 📊 **Data Exploration**
-
-**You might consider describing the following (as applicable):**
-
-* The dataset(s) used: origin, format, size, type of data
-* Data exploration and preprocessing approaches
-* Insights from your Exploratory Data Analysis (EDA)
-* Challenges and assumptions when working with the dataset(s)
-
-**Potential visualizations to include:**
-
-* Plots, charts, heatmaps, feature visualizations, sample dataset images
+Project status (November 2026): Multiple SmolLM2 and Phi-3.5-mini fine-tuning experiments have been completed. Evaluation results are being standardized; a consistent cross-model benchmark and cost comparison have not yet been finalized.
 
 ---
 
 ## 🧠 **Model Development**
 
-**You might consider describing the following (as applicable):**
-
-* Model(s) used (e.g., CNN with transfer learning, regression models)
-* Feature selection and Hyperparameter tuning strategies
-* Training setup (e.g., % of data for training/validation, evaluation metric, baseline performance)
+Approach
+1. Prepare customer-support instructions and corresponding reference/teacher outputs for experimentation.
+2. Establish baseline outputs from the selected pretrained SLM.
+3. Adapt the SLM with LoRA/QLoRA and compare hyperparameter settings.
+4. Evaluate baseline and fine-tuned generations using the same scoring framework where possible.
+5. Consolidate experiment outputs to investigate quality, latency, and eventual cost trade-offs.
 
 
 ---
 
 ## 📈 **Results & Key Findings**
 
-**You might consider describing the following (as applicable):**
-
-* Performance metrics (e.g., Accuracy, F1 score, RMSE)
-* How your model performed
-* Insights from evaluating model fairness
-
-**Potential visualizations to include:**
-
-* Confusion matrix, precision-recall curve, feature importance plot, prediction distribution, outputs from fairness or explainability tools
+| Metric | Baseline | Fine-tuned | Direction |
+|------------------|---------------|----------------------|------------|
+| Test LLM-judge composite    | 3.86 | 3.67 | Decreased |
+| Validation LLM-judge composite | 4.06 | 4.11 | Increased |
+| Test cosine similarity | 0.770  | 0.817 | Increased |
+| Test multi-reference cosine similarity | 0.825 | 0.862 | Increased |
 
 ---
 
 ## 🚀 **Next Steps**
 
-**You might consider addressing the following (as applicable):**
-
-* What are some of the limitations of your model?
-* What would you do differently with more time/resources?
-* What additional datasets or techniques would you explore?
-
----
-
-## 📝 **License**
-
-Specify how your project can be used by others. Choose an appropriate license and link it here (e.g., MIT, Apache 2.0). Make sure your Challenge Advisor approves of the selected license type. 
-
-**Example:**
-This project is licensed under the MIT License.
+1. Validate reconstructed prompts, dataset splits, and reference outputs; finalize the common 17-column evaluation format.
+2. Compute BERTScore from saved predictions and references, and resolve missing relevance and batch-size fields where reliable source records exist.
+3. Evaluate selected baseline and fine-tuned configurations on the same held-out examples, with the same judge rubric, prompts, and scoring settings.
+4. Report separate results for intent/theme-labeling quality and response-generation quality where both tasks are evaluated.
+5. Benchmark per-request latency, token usage, and estimated cost under clearly stated, comparable hardware and pricing assumptions.
+6. Analyze response specificity and whether additional epochs or higher adapter rank lead to diminishing returns.
+7. If feasible, build a live side-by-side customer-support input demo comparing a frontier LLM and the selected SLM.
+8. Document limitations, data provenance, and potential research-paper findings.
 
 ---
 
-## 📄 **References** (Optional but encouraged)
+## 🙏 **Acknowledgements**
 
-Cite relevant papers, articles, or resources that supported your project.
-
----
-
-## 🙏 **Acknowledgements** (Optional but encouraged)
-
-Thank your Challenge Advisor, host company representatives, TA, and others who supported your project.
+Thank you to Automation Anywhere, Break Through Tech AI Studio, and the project's Challenge Advisor, AI Studio Coach, and collaborators for their guidance and support.
